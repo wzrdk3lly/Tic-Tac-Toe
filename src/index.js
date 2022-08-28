@@ -1,7 +1,7 @@
 
 
 const createBoard = () => {
-    let boardArray = ["0","1","2",
+    let boardArray = ["first position","1","2",
                       "3","4","5",
                       "6","7","8"];
 
@@ -14,45 +14,36 @@ const gameState = () => {
 
     let gameBoard = createBoard(); // gameboard = newArray(9)
 
-    let boardContainer = document.querySelectorAll(".boardCell");
-   
-    boardContainer.forEach(element => {
-        element.addEventListener('click', (e) => {
-            e.target.innerText = "O"
-        })
-    })
-
-
 
     let player1 = player("Player1", "X");
     let player2 = player("player2", "O");
 
     let turn = 2
 
-    //Disable 
-    // // Alternates players turns 
-    // while (true) {
-    //     if (turn % 2 === 0){
-    //     player1.takeTurn()
-    //     }
-    //     else{
-    //     player2.takeTurn()
-    //     }
-    //     turn++;
-    // }
+    let boardContainer = document.querySelector("#board");
+
+        const takeTurns = (e) => {
+                if(turn % 2 === 0){
+                    player1.takeTurn(e);
+                    turn++;
+                }
+                else{
+                    player2.takeTurn(e);
+                    turn++
+                }
+        }
+
+        boardContainer.addEventListener('click', takeTurns)   
 }
 
 const player = (name, mark) => {
 
     const getMark = () => mark
 
-    let takeTurn = () => {
+    // place player mark inside clicked board position
+    let takeTurn = (e) => {
         console.log(`${name} is taking a turn`)
-    
-        // let playerSpace = document.queryselector(playerSpace) 
-        // playerSpace.addEventlistener("click", (e) => { gameboard[e.id] = getMark()}
-
-        // mabye open and close event listener of all the boxes in this function
+        e.target.innerText = getMark()
     }
     return {takeTurn, getMark}
 
