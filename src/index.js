@@ -14,7 +14,7 @@ const gameState = () => {
   let turn = 2;
 
   let boardContainer = document.querySelector("#board");
-
+  let playerTurnDisplay = document.querySelector("#announcer")
   const takeTurns = (e) => {
     // Validation to prevent double turns
     if(e.target.innerText === "X" || e.target.innerText === "O"){
@@ -27,15 +27,15 @@ const gameState = () => {
       player1.takeTurn(e);
       gameBoard[(Number(e.target.id))] = e.target.innerText;
       console.log(gameBoard)
-      // replace with html.inner.text for front end display
-      console.log(`Player ${player2.getMark()} take your turn`)
+      // replace with html.inner.text for front end display'
+      playerTurnDisplay.innerText = `Player ${player2.getMark()} take your turn`
       turn++;
     } else {
       player2.takeTurn(e);
       gameBoard[(Number(e.target.id))] = e.target.innerText;
       console.log(gameBoard)
       // replace with html.inner.text for front end display
-      console.log(`Player ${player1.getMark()} take your turn`)
+      playerTurnDisplay.innerText = `Player ${player1.getMark()} take your turn`
       turn++;
     }
   };
