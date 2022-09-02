@@ -1,47 +1,98 @@
 // Initialize game board
 const createBoard = () => {
-  let boardArray = ["first position", "1", "2", "3", "4", "5", "6", "7", "8"];
+  let boardArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
   console.log("board array has been created ");
   return boardArray;
 };
 
 const gameState = () => {
+  //Set up Game state
   let gameBoard = createBoard(); // gameboard = newArray(9)
 
-  let player1 = player("Player X", "X");
-  let player2 = player("player O", "O");
+  // Create player objects
+  const player1 = player("Player X", "X");
+  const player2 = player("player O", "O");
 
+  //initialize turn at 2 to enable toggle in takeTurn() function
   let turn = 2;
 
+  // grab query selectors needed for game front-end
   let boardContainer = document.querySelector("#board");
-  let playerTurnDisplay = document.querySelector("#announcer")
+  let playerTurnDisplay = document.querySelector("#announcer");
+
+  // callback for click events
   const takeTurns = (e) => {
     // Validation to prevent double turns
-    if(e.target.innerText === "X" || e.target.innerText === "O"){
-    alert("Inappropriate move")
-      return
+    if (e.target.innerText === "X" || e.target.innerText === "O") {
+      alert("Inappropriate move");
+      return;
     }
-
+    // Toggles between players allowing them to take turns 
+    // and checks for a winner after each turn
     if (turn % 2 === 0) {
-      
       player1.takeTurn(e);
-      gameBoard[(Number(e.target.id))] = e.target.innerText;
-      console.log(gameBoard)
-      // replace with html.inner.text for front end display'
-      playerTurnDisplay.innerText = `Player ${player2.getMark()} take your turn`
+
+      // update gameboard data storage
+      gameBoard[Number(e.target.id)] = e.target.innerText;
+
+      
+      console.log(gameBoard);
+
+      isWinner(gameBoard,player1.getMark())
+      // Display player turn
+      playerTurnDisplay.innerText = `Player ${player2.getMark()} take your turn`;
       turn++;
     } else {
       player2.takeTurn(e);
-      gameBoard[(Number(e.target.id))] = e.target.innerText;
-      console.log(gameBoard)
-      // replace with html.inner.text for front end display
-      playerTurnDisplay.innerText = `Player ${player1.getMark()} take your turn`
+      gameBoard[Number(e.target.id)] = e.target.innerText;
+      console.log(gameBoard);
+      isWinner(gameBoard, player2.getMark())
+      // Display player turn
+      playerTurnDisplay.innerText = `Player ${player1.getMark()} take your turn`;
       turn++;
+    }
+
+    function isWinner(gameBoard,playerMark){
+      // console.log(typeof(gameBoard[0]),typeof(playerMark));
+      // && gameBoard[1] === playerMark && gameBoard[2] === playerMark
+      switch(true){
+        // Horizontal Wins
+        case (gameBoard[0] === playerMark && gameBoard[1] === playerMark && gameBoard[2] === playerMark):
+          console.log(`${playerMark} is the winner`);
+        // TODO Clear the gameboard 
+          // TODO remove event listener once the game is won
+          break;
+        case (gameBoard[3] === playerMark && gameBoard[4] === playerMark && gameBoard[5] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        case (gameBoard[6] === playerMark && gameBoard[7] === playerMark && gameBoard[8] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        // Diagonal Wins
+        case (gameBoard[0] === playerMark && gameBoard[4] === playerMark && gameBoard[8] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        case (gameBoard[2] === playerMark && gameBoard[4] === playerMark && gameBoard[6] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        // Vertical Wins
+        case (gameBoard[0] === playerMark && gameBoard[3] === playerMark && gameBoard[6] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        case (gameBoard[1] === playerMark && gameBoard[4] === playerMark && gameBoard[7] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        case (gameBoard[2] === playerMark && gameBoard[5] === playerMark && gameBoard[8] === playerMark):
+          console.log(`${playerMark} is the winner`);
+          break;
+        default:
+          return
+      }
     }
   };
 
   boardContainer.addEventListener("click", takeTurns);
-  console.log(`Player ${player1.getMark()} take your turn`)
+  console.log(`Player ${player1.getMark()} take your turn`);
 };
 
 const player = (name, mark) => {
@@ -49,7 +100,6 @@ const player = (name, mark) => {
 
   // place player mark inside clicked board position
   let takeTurn = (e) => {
-
     e.target.innerText = getMark();
   };
   return { takeTurn, getMark };
@@ -104,7 +154,9 @@ let newGame = gameState();
  *  - if board[6] board[7] board[8] == ...
  *  - if board[0] board[4] [8] == ..
  *  - if board[2] board[4] [6]
+ * 
+ *  - when a winner is determined clear the gameboard and remove gameboard event listener
  *
- * Bugs 
+ * Bugs
  * - selecting div other than the square
  */
