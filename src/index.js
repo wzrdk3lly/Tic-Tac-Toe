@@ -15,6 +15,7 @@ const gameState = () => {
 
   //initialize turn at 2 to enable toggle in takeTurn() function
   let turn = 2;
+  let gameWon = false;
 
   // grab query selectors needed for game front-end
   let boardContainer = document.querySelector("#board");
@@ -52,6 +53,10 @@ const gameState = () => {
       turn++;
     }
 
+    if(turn === 11 && !gameWon){
+      console.log("it's a tie")
+    }
+
     function isWinner(gameBoard,playerMark){
       // console.log(typeof(gameBoard[0]),typeof(playerMark));
       // && gameBoard[1] === playerMark && gameBoard[2] === playerMark
@@ -59,31 +64,39 @@ const gameState = () => {
         // Horizontal Wins
         case (gameBoard[0] === playerMark && gameBoard[1] === playerMark && gameBoard[2] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
         // TODO Clear the gameboard 
           // TODO remove event listener once the game is won
           break;
         case (gameBoard[3] === playerMark && gameBoard[4] === playerMark && gameBoard[5] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         case (gameBoard[6] === playerMark && gameBoard[7] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         // Diagonal Wins
         case (gameBoard[0] === playerMark && gameBoard[4] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         case (gameBoard[2] === playerMark && gameBoard[4] === playerMark && gameBoard[6] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         // Vertical Wins
         case (gameBoard[0] === playerMark && gameBoard[3] === playerMark && gameBoard[6] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         case (gameBoard[1] === playerMark && gameBoard[4] === playerMark && gameBoard[7] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         case (gameBoard[2] === playerMark && gameBoard[5] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
+          gameWon = true;
           break;
         default:
           return
