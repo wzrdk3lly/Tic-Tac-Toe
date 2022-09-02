@@ -10,16 +10,20 @@ const gameState = () => {
   let gameBoard = createBoard(); // gameboard = newArray(9)
 
   // Create player objects
-  const player1 = player("Player X", "X");
-  const player2 = player("player O", "O");
+  const player1 = player("player 1", "X");
+  const player2 = player("player 2", "O");
 
   //initialize turn at 2 to enable toggle in takeTurn() function
   let turn = 2;
   let gameWon = false;
+  let winningPlayer = "";
 
   // grab query selectors needed for game front-end
   let boardContainer = document.querySelector("#board");
-  let playerTurnDisplay = document.querySelector("#announcer");
+  let announcerDisplay = document.querySelector("#announcer");
+  let restartButton = document.querySelector(".restart")
+
+  announcerDisplay.innerText = `${player1.getName()} (${player1.getMark()}) take your turn`
 
   // callback for click events
   const takeTurns = (e) => {
@@ -32,6 +36,7 @@ const gameState = () => {
     // and checks for a winner after each turn
     if (turn % 2 === 0) {
       player1.takeTurn(e);
+    
 
       // update gameboard data storage
       gameBoard[Number(e.target.id)] = e.target.innerText;
@@ -39,25 +44,28 @@ const gameState = () => {
       
       console.log(gameBoard);
 
-      isWinner(gameBoard,player1.getMark())
+      isWinner(gameBoard,player1.getMark(), player1.getName())
       // Display player turn
-      playerTurnDisplay.innerText = `Player ${player2.getMark()} take your turn`;
+      announcerDisplay.innerText = `${player2.getName()} (${player2.getMark()}) take your turn`;
       turn++;
     } else {
       player2.takeTurn(e);
       gameBoard[Number(e.target.id)] = e.target.innerText;
       console.log(gameBoard);
-      isWinner(gameBoard, player2.getMark())
+      isWinner(gameBoard, player2.getMark(), player2.getName())
       // Display player turn
-      playerTurnDisplay.innerText = `Player ${player1.getMark()} take your turn`;
+      announcerDisplay.innerText = `${player1.getName()} (${player1.getMark()}) take your turn`;
       turn++;
     }
 
     if(turn === 11 && !gameWon){
-      console.log("it's a tie")
+      announcerDisplay.innerText = "It's a Tie!"
+    }
+    else if(gameWon){
+      announcerDisplay.innerText =`${winningPlayer} Won!`
     }
 
-    function isWinner(gameBoard,playerMark){
+    function isWinner(gameBoard,playerMark,playerName){
       // console.log(typeof(gameBoard[0]),typeof(playerMark));
       // && gameBoard[1] === playerMark && gameBoard[2] === playerMark
       switch(true){
@@ -65,38 +73,44 @@ const gameState = () => {
         case (gameBoard[0] === playerMark && gameBoard[1] === playerMark && gameBoard[2] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
-        // TODO Clear the gameboard 
-          // TODO remove event listener once the game is won
+          winningPlayer = playerName;
           break;
         case (gameBoard[3] === playerMark && gameBoard[4] === playerMark && gameBoard[5] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         case (gameBoard[6] === playerMark && gameBoard[7] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         // Diagonal Wins
         case (gameBoard[0] === playerMark && gameBoard[4] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         case (gameBoard[2] === playerMark && gameBoard[4] === playerMark && gameBoard[6] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         // Vertical Wins
         case (gameBoard[0] === playerMark && gameBoard[3] === playerMark && gameBoard[6] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         case (gameBoard[1] === playerMark && gameBoard[4] === playerMark && gameBoard[7] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         case (gameBoard[2] === playerMark && gameBoard[5] === playerMark && gameBoard[8] === playerMark):
           console.log(`${playerMark} is the winner`);
           gameWon = true;
+          winningPlayer = playerName;
           break;
         default:
           return
@@ -105,17 +119,21 @@ const gameState = () => {
   };
 
   boardContainer.addEventListener("click", takeTurns);
-  console.log(`Player ${player1.getMark()} take your turn`);
+  // console.log(`Player ${player1.getMark()} take your turn`);
+  restartButton.addEventListener("click", () => {
+    window.location.reload()
+  })
 };
 
 const player = (name, mark) => {
   const getMark = () => mark;
+  let getName = () => name;
 
   // place player mark inside clicked board position
   let takeTurn = (e) => {
     e.target.innerText = getMark();
   };
-  return { takeTurn, getMark };
+  return { takeTurn, getMark, getName };
 };
 
 let newGame = gameState();
