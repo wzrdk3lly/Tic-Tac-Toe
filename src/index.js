@@ -49,6 +49,7 @@ const gameState = () => {
       if (turn % 2 === 0) {
         player1.takeTurn(e);
         updateGameBoardArray();
+        console.log(gameBoard);
         isWinner(gameBoard, player1.getMark(), player1.getName());
         // Display player turn
         announcerDisplay.innerText = `${player2.getName()} (${player2.getMark()}) take your turn`;
@@ -65,70 +66,17 @@ const gameState = () => {
     }
 
     function isWinner(gameBoard, playerMark, playerName) {
-      switch (true) {
-        // Horizontal Wins
-        case gameBoard[0] === playerMark &&
-          gameBoard[1] === playerMark &&
-          gameBoard[2] === playerMark:
-          console.log(`${playerMark} is the winner`);
+      const winningCombinations = [[0,1,2],[3,4,5],[6,7,8],[0,4,8],[2,4,6],[0,3,6],[1,4,7],[2,5,8]]
+
+      winningCombinations.forEach(i => {
+        if (gameBoard[i[0]] === playerMark && gameBoard[i[1]] === playerMark && gameBoard[i[2]] === playerMark){
+          // console.log(`${playerMark} is the winner at ${i}`); Debug assist
           gameWon = true;
           winningPlayer = playerName;
-          break;
-        case gameBoard[3] === playerMark &&
-          gameBoard[4] === playerMark &&
-          gameBoard[5] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        case gameBoard[6] === playerMark &&
-          gameBoard[7] === playerMark &&
-          gameBoard[8] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        // Diagonal Wins
-        case gameBoard[0] === playerMark &&
-          gameBoard[4] === playerMark &&
-          gameBoard[8] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        case gameBoard[2] === playerMark &&
-          gameBoard[4] === playerMark &&
-          gameBoard[6] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        // Vertical Wins
-        case gameBoard[0] === playerMark &&
-          gameBoard[3] === playerMark &&
-          gameBoard[6] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        case gameBoard[1] === playerMark &&
-          gameBoard[4] === playerMark &&
-          gameBoard[7] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        case gameBoard[2] === playerMark &&
-          gameBoard[5] === playerMark &&
-          gameBoard[8] === playerMark:
-          console.log(`${playerMark} is the winner`);
-          gameWon = true;
-          winningPlayer = playerName;
-          break;
-        default:
-          return;
-      }
+        }
+        })
     }
+
 
     function isTie() {
       return turn === 9 && !gameWon;
