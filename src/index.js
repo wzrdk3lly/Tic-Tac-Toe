@@ -21,9 +21,9 @@ const gameState = () => {
   // grab query selectors needed for game front-end
   let boardContainer = document.querySelector("#board");
   let announcerDisplay = document.querySelector("#announcer");
-  let restartButton = document.querySelector(".restart")
+  let restartButton = document.querySelector(".restart");
 
-  announcerDisplay.innerText = `${player1.getName()} (${player1.getMark()}) take your turn`
+  announcerDisplay.innerText = `${player1.getName()} (${player1.getMark()}) take your turn`;
 
   // callback for click events
   const takeTurns = (e) => {
@@ -32,19 +32,17 @@ const gameState = () => {
       alert("Inappropriate move");
       return;
     }
-    // Toggles between players allowing them to take turns 
+    // Toggles between players allowing them to take turns
     // and checks for a winner after each turn
     if (turn % 2 === 0) {
       player1.takeTurn(e);
-    
 
       // update gameboard data storage
       gameBoard[Number(e.target.id)] = e.target.innerText;
 
-      
       console.log(gameBoard);
 
-      isWinner(gameBoard,player1.getMark(), player1.getName())
+      isWinner(gameBoard, player1.getMark(), player1.getName());
       // Display player turn
       announcerDisplay.innerText = `${player2.getName()} (${player2.getMark()}) take your turn`;
       turn++;
@@ -52,68 +50,84 @@ const gameState = () => {
       player2.takeTurn(e);
       gameBoard[Number(e.target.id)] = e.target.innerText;
       console.log(gameBoard);
-      isWinner(gameBoard, player2.getMark(), player2.getName())
+      isWinner(gameBoard, player2.getMark(), player2.getName());
       // Display player turn
       announcerDisplay.innerText = `${player1.getName()} (${player1.getMark()}) take your turn`;
       turn++;
     }
 
-    if(turn === 11 && !gameWon){
-      announcerDisplay.innerText = "It's a Tie!"
-    }
-    else if(gameWon){
-      announcerDisplay.innerText =`${winningPlayer} Won!`
+    if (turn === 11 && !gameWon) {
+      announcerDisplay.innerText = "It's a Tie!";
+    } else if (gameWon) {
+      announcerDisplay.innerText = `${winningPlayer} Won!`;
+      boardContainer.removeEventListener("click", takeTurns);
     }
 
-    function isWinner(gameBoard,playerMark,playerName){
+    function isWinner(gameBoard, playerMark, playerName) {
       // console.log(typeof(gameBoard[0]),typeof(playerMark));
       // && gameBoard[1] === playerMark && gameBoard[2] === playerMark
-      switch(true){
+      switch (true) {
         // Horizontal Wins
-        case (gameBoard[0] === playerMark && gameBoard[1] === playerMark && gameBoard[2] === playerMark):
+        case gameBoard[0] === playerMark &&
+          gameBoard[1] === playerMark &&
+          gameBoard[2] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
-        case (gameBoard[3] === playerMark && gameBoard[4] === playerMark && gameBoard[5] === playerMark):
+        case gameBoard[3] === playerMark &&
+          gameBoard[4] === playerMark &&
+          gameBoard[5] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
-        case (gameBoard[6] === playerMark && gameBoard[7] === playerMark && gameBoard[8] === playerMark):
+        case gameBoard[6] === playerMark &&
+          gameBoard[7] === playerMark &&
+          gameBoard[8] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
         // Diagonal Wins
-        case (gameBoard[0] === playerMark && gameBoard[4] === playerMark && gameBoard[8] === playerMark):
+        case gameBoard[0] === playerMark &&
+          gameBoard[4] === playerMark &&
+          gameBoard[8] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
-        case (gameBoard[2] === playerMark && gameBoard[4] === playerMark && gameBoard[6] === playerMark):
+        case gameBoard[2] === playerMark &&
+          gameBoard[4] === playerMark &&
+          gameBoard[6] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
         // Vertical Wins
-        case (gameBoard[0] === playerMark && gameBoard[3] === playerMark && gameBoard[6] === playerMark):
+        case gameBoard[0] === playerMark &&
+          gameBoard[3] === playerMark &&
+          gameBoard[6] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
-        case (gameBoard[1] === playerMark && gameBoard[4] === playerMark && gameBoard[7] === playerMark):
+        case gameBoard[1] === playerMark &&
+          gameBoard[4] === playerMark &&
+          gameBoard[7] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
-        case (gameBoard[2] === playerMark && gameBoard[5] === playerMark && gameBoard[8] === playerMark):
+        case gameBoard[2] === playerMark &&
+          gameBoard[5] === playerMark &&
+          gameBoard[8] === playerMark:
           console.log(`${playerMark} is the winner`);
           gameWon = true;
           winningPlayer = playerName;
           break;
         default:
-          return
+          return;
       }
     }
   };
@@ -121,8 +135,8 @@ const gameState = () => {
   boardContainer.addEventListener("click", takeTurns);
   // console.log(`Player ${player1.getMark()} take your turn`);
   restartButton.addEventListener("click", () => {
-    window.location.reload()
-  })
+    window.location.reload();
+  });
 };
 
 const player = (name, mark) => {
@@ -185,7 +199,7 @@ let newGame = gameState();
  *  - if board[6] board[7] board[8] == ...
  *  - if board[0] board[4] [8] == ..
  *  - if board[2] board[4] [6]
- * 
+ *
  *  - when a winner is determined clear the gameboard and remove gameboard event listener
  *
  * Bugs
